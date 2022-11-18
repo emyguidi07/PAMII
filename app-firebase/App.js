@@ -25,9 +25,25 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
 export default function App() {
+  
+  const [ dados, setDados ] = useState([]);
+  useEffect(() => {
+    Firebase.firestore.collection("teste").get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        setDados([doc.data()]);
+      });
+  });
+  
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Text>Testando firebase e suas conexões!</Text>
+
+      {
+        dados.map((item) => {
+          return <Text>{ item.nome }</Text>
+        })
+      }
       <StatusBar style="auto" />
     </View>
   );
